@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Noisy Neighbours: A Totally Subtle Romance</title>
+<style>
+    body {
+        background-color: #111;
+        color: #f4f4f4;
+        font-family: Arial, sans-serif;
+        padding: 30px;
+        max-width: 700px;
+        margin: auto;
+    }
+    h1 {
+        color: #ff4da6;
+    }
+    button {
+        display: block;
+        margin: 10px 0;
+        padding: 10px;
+        background: #ff4da6;
+        border: none;
+        color: white;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+    button:hover {
+        background: #ff1a8c;
+    }
+    .stats {
+        margin-top: 20px;
+        padding: 10px;
+        background: #222;
+        border-radius: 5px;
+    }
+</style>
+</head>
+<body>
+
+<h1>Noisy Neighbours</h1>
+<div id="game"></div>
+
+<div class="stats">
+    <strong>Stats:</strong><br>
+    🔥 Chemistry: <span id="chemistry">0</span><br>
+    🎭 Drama: <span id="drama">0</span><br>
+    🧠 Sanity: <span id="sanity">5</span><br>
+    🏢 HOA Suspicion: <span id="hoa">0</span>
+</div>
+
+<script>
+let chemistry = 0;
+let drama = 0;
+let sanity = 5;
+let hoa = 0;
+
+function updateStats() {
+    document.getElementById("chemistry").innerText = chemistry;
+    document.getElementById("drama").innerText = drama;
+    document.getElementById("sanity").innerText = sanity;
+    document.getElementById("hoa").innerText = hoa;
+}
+
+function startGame() {
+    document.getElementById("game").innerHTML = `
+    <p>You just moved into Apartment 4B for a quiet life.</p>
+    <p>At exactly 12:03 AM: THUD. Loud music. Something crashes.</p>
+    <p>What do you do?</p>
+    <button onclick="ignore()">Ignore it and meditate.</button>
+    <button onclick="storm()">Storm over and knock dramatically.</button>
+    <button onclick="morse()">Knock back in Morse code.</button>
+    <button onclick="louder()">Turn your speakers louder.</button>
+    `;
+}
+
+function ignore() {
+    sanity += 1;
+    document.getElementById("game").innerHTML = `
+    <p>You attempt peaceful meditation.</p>
+    <p>The bass vibrates your spine anyway.</p>
+    <button onclick="endCheck()">Continue</button>
+    `;
+    updateStats();
+}
+
+function storm() {
+    drama += 2;
+    chemistry += 1;
+    document.getElementById("game").innerHTML = `
+    <p>You storm over. The door opens.</p>
+    <p>Blaze Thunderstone stands there. Shirt: questionable.</p>
+    <p>"I was expecting you," he says dramatically.</p>
+    <button onclick="blush()">Blush uncontrollably.</button>
+    <button onclick="complaint()">Hand him a noise complaint form.</button>
+    <button onclick="stare()">Challenge him to a stare-off.</button>
+    `;
+    updateStats();
+}
+
+function morse() {
+    drama += 1;
+    sanity -= 1;
+    document.getElementById("game").innerHTML = `
+    <p>You knock in Morse code. He knocks back… incorrectly.</p>
+    <button onclick="endCheck()">Continue</button>
+    `;
+    updateStats();
+}
+
+function louder() {
+    hoa += 2;
+    drama += 1;
+    document.getElementById("game").innerHTML = `
+    <p>You blast your speakers.</p>
+    <p>Mrs. Crumbleton downstairs screams, "I'M CALLING THE HOA!"</p>
+    <button onclick="endCheck()">Continue</button>
+    `;
+    updateStats();
+}
+
+function blush() {
+    chemistry += 2;
+    sanity -= 1;
+    endCheck();
+}
+
+function complaint() {
+    hoa += 1;
+    drama += 1;
+    endCheck();
+}
+
+function stare() {
+    drama += 2;
+    chemistry += 1;
+    endCheck();
+}
+
+function endCheck() {
+    updateStats();
+
+    if (chemistry >= 4) {
+        document.getElementById("game").innerHTML = `
+        <h2>Ending: Balcony Kiss for No Reason</h2>
+        <p>Slow motion. Wind machine. Applause from nowhere.</p>
+        <button onclick="restart()">Play Again</button>
+        `;
+    }
+    else if (drama >= 5) {
+        document.getElementById("game").innerHTML = `
+        <h2>Ending: Hallway Showdown</h2>
+        <p>The entire building gathers. Someone records it for social media.</p>
+        <button onclick="restart()">Play Again</button>
+        `;
+    }
+    else if (sanity <= 0) {
+        document.getElementById("game").innerHTML = `
+        <h2>Ending: You Become the Loud Neighbor</h2>
+        <p>You now own three subwoofers and a fog machine.</p>
+        <button onclick="restart()">Play Again</button>
+        `;
+    }
+    else if (hoa >= 3) {
+        document.getElementById("game").innerHTML = `
+        <h2>Ending: HOA Intervention</h2>
+        <p>Mrs. Crumbleton wins. Everyone loses.</p>
+        <button onclick="restart()">Play Again</button>
+        `;
+    }
+    else {
+        document.getElementById("game").innerHTML = `
+        <p>The tension continues…</p>
+        <button onclick="startGame()">Next Night</button>
+        `;
+    }
+}
+
+function restart() {
+    chemistry = 0;
+    drama = 0;
+    sanity = 5;
+    hoa = 0;
+    updateStats();
+    startGame();
+}
+
+startGame();
+updateStats();
+</script>
+
+</body>
+</html>
