@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Noisy Neighbours: Spoof</title>
+<style>
+    body { background: #111; color: #fff; font-family: Arial, sans-serif; max-width: 700px; margin: 20px auto; padding: 20px; }
+    h1 { color: #ff4da6; }
+    button { display: block; margin: 10px 0; padding: 10px; background: #ff4da6; border: none; border-radius: 5px; color: #fff; cursor: pointer; font-size: 16px; }
+    button:hover { background: #ff1a8c; }
+    #stats { background: #222; padding: 10px; border-radius: 5px; margin-top: 20px; }
+</style>
+</head>
+<body>
+
+<h1>Noisy Neighbours: Spoof Edition</h1>
+
+<div id="game"></div>
+
+<div id="stats">
+🔥 Chemistry: <span id="chemistry">0</span> | 🎭 Drama: <span id="drama">0</span> | 🧠 Sanity: <span id="sanity">5</span> | 🏢 HOA Suspicion: <span id="hoa">0</span>
+</div>
+
+<script>
+let chemistry = 0;
+let drama = 0;
+let sanity = 5;
+let hoa = 0;
+
+function updateStats() {
+    document.getElementById("chemistry").innerText = chemistry;
+    document.getElementById("drama").innerText = drama;
+    document.getElementById("sanity").innerText = sanity;
+    document.getElementById("hoa").innerText = hoa;
+}
+
+function startGame() {
+    document.getElementById("game").innerHTML = `
+    <p>You just moved into Apartment 4B. Midnight strikes and… THUD. Loud music. Something crashes.</p>
+    <p>What do you do?</p>
+    <button onclick="storm()">Storm over to the neighbor</button>
+    <button onclick="ignore()">Ignore and meditate</button>
+    <button onclick="louder()">Play your own louder music</button>
+    <button onclick="morse()">Knock in Morse code</button>
+    `;
+}
+
+function storm() {
+    chemistry += 1;
+    drama += 2;
+    document.getElementById("game").innerHTML = `
+    <p>Blaze opens the door. Shirt: suspiciously tight. Hair: wind-blown indoors.</p>
+    <p>He says, "I was expecting you."</p>
+    <button onclick="blush()">Blush uncontrollably</button>
+    <button onclick="complaint()">Hand a noise complaint form</button>
+    <button onclick="stare()">Challenge to a stare-off</button>
+    `;
+    updateStats();
+}
+
+function ignore() {
+    sanity += 1;
+    endTurn("You try to meditate, but the bass vibrates your spine anyway.");
+}
+
+function louder() {
+    hoa += 2;
+    drama += 1;
+    endTurn("You blast your speakers. Mrs. Crumbleton downstairs screams: 'I'M CALLING THE HOA!'");
+}
+
+function morse() {
+    drama += 1;
+    sanity -= 1;
+    endTurn("You knock in Morse code. Neighbor knocks back… incorrectly. Confusion ensues.");
+}
+
+function blush() {
+    chemistry += 2;
+    sanity -= 1;
+    endTurn("You blush dramatically. He smiles. The walls still vibrate.");
+}
+
+function complaint() {
+    hoa += 1;
+    drama += 1;
+    endTurn("You hand over a noise complaint form. He frowns… theatrically.");
+}
+
+function stare() {
+    drama += 2;
+    chemistry += 1;
+    endTurn("You stare intensely. He stares back. Tension rises.");
+}
+
+function endTurn(message) {
+    updateStats();
+
+    // Check endings
+    if (chemistry >= 4) {
+        document.getElementById("game").innerHTML = `
+        <h2>Ending: Balcony Romance</h2>
+        <p>${message}<br>Slow motion. Wind machine. Applause from nowhere.</p>
+        <button onclick="restart()">Restart</button>
+        `;
+    } else if (drama >= 5) {
+        document.getElementById("game").innerHTML = `
+        <h2>Ending: Hallway Drama Showdown</h2>
+        <p>${message}<br>The entire building gathers for a dramatic showdown.</p>
+        <button onclick="restart()">Restart</button>
+        `;
+    } else if (sanity <= 0) {
+        document.getElementById("game").innerHTML = `
+        <h2>Ending: You Become the Loud Neighbor</h2>
+        <p>${message}<br>You now own three subwoofers and a fog machine.</p>
+        <button onclick="restart()">Restart</button>
+        `;
+    } else if (hoa >= 3) {
+        document.getElementById("game").innerHTML = `
+        <h2>Ending: HOA Intervention</h2>
+        <p>${message}<br>Mrs. Crumbleton wins. Everyone loses.</p>
+        <button onclick="restart()">Restart</button>
+        `;
+    } else {
+        document.getElementById("game").innerHTML = `
+        <p>${message}</p>
+        <button onclick="startGame()">Next Night</button>
+        `;
+    }
+}
+
+function restart() {
+    chemistry = 0;
+    drama = 0;
+    sanity = 5;
+    hoa = 0;
+    updateStats();
+    startGame();
+}
+
+// Start the game
+startGame();
+updateStats();
+</script>
+
+</body>
+</html>
